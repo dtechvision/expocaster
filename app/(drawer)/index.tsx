@@ -1,13 +1,16 @@
 import { Text, View } from 'react-native';
 
-import EditScreenInfo from '../../components/edit-screen-info';
+import FrameRenderer from '../../components/frame-renderer';
+import CastFrames from '~/components/cast-frames';
 
 const Page = () => {
   return (
     <View className={styles.container}>
       <Text className={styles.title}>Home</Text>
       <View className={styles.separator} />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <FrameRenderer url="http://localhost:8081/api/frames/costco" />
+      {/* https://warpcast.com/gregfromstl/0xac0abe37 users casts -> political leaning frame */}
+      <CastFrames hash='0xac0abe37'/>
     </View>
   );
 };
