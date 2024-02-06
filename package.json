@@ -6,7 +6,8 @@
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "ios": "expo start --ios",
     "start": "expo start",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "vercel-build": "expo export -p web"
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.4.1",
@@ -22,18 +23,7 @@
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.3",
     "expo-web-browser": "~12.8.2",
-    "farcasterkit": "^1.0.1",
-    "firebase": "^10.5.2",
-    "nativewind": "^4.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native": "0.73.2",
-    "react-native-gesture-handler": "~2.14.0",
-    "react-native-reanimated": "~3.6.2",
-    "react-native-safe-area-context": "^4.8.2",
-    "react-native-screens": "~3.29.0",
-    "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.6"
+    "farcasterkit": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
