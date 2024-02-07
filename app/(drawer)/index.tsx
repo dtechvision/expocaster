@@ -1,16 +1,20 @@
 import { Text, View } from 'react-native';
 
-import FrameRenderer from '../../components/frame-renderer';
-import CastFrames from '~/components/cast-frames';
+import RenderFrame from '../../components/render-frame';
+
+import { FrameRender } from '~/components/renderFrame';
+import { getFrame } from 'frames.js/src';
+import { Frame } from 'frames.js';
 
 const Page = () => {
+  let frame: Frame = getFrame({ htmlString: 'tes', url: 'http://localhost:8081/api/frames/costco' });
   return (
     <View className={styles.container}>
       <Text className={styles.title}>Home</Text>
+      <FrameRender url="http://localhost:8081/api/frames/costco" isLoggedIn={true} frame={frame}  />
       <View className={styles.separator} />
-      <FrameRenderer url="http://localhost:8081/api/frames/costco" />
+      <RenderFrame frameUrl="http://localhost:8081/api/frames/costco" />
       {/* https://warpcast.com/gregfromstl/0xac0abe37 users casts -> political leaning frame */}
-      <CastFrames hash='0xac0abe37'/>
     </View>
   );
 };
