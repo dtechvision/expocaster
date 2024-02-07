@@ -56,3 +56,40 @@ otherwise it's straight Typescript and Expo.
 ### To contribute feedback and bug reports
 
 1) create an Issue
+
+# Deployment of Frames and Web
+
+>Official Expo [Deployment Documentation here](https://vercel.com/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt) to be used as most up to date document and reference checked if the below doesn't work!
+
+## NodeJS with Express
+
+> Expo's [Official Documentation can be found here and should be referenced if the below doesn't work](https://docs.expo.dev/router/reference/api-routes/#express)
+
+Copy the following file structure over to your server where you have nodeJS installed
+
+```
+/
+|
+|_ server.js
+|
+|_ dist/
+
+```
+
+then run the node server
+
+```
+node server.js
+```
+
+## Vercel
+
+>NOTE: this hasn't been made work, but is what documentation states! If you make it work please open a PR!
+
+If your remote build doesn't work you may try [prebuilding and then uploading](https://vercel.com/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt) like so:
+
+this assumes you have vercel installed (```npx vercel```) and configured
+
+```
+npx vercel build && npx vercel deploy --prebuilt
+```
