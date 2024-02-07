@@ -21,6 +21,7 @@ Write once, enjoy everywhere.
 to test: 
 1) Clone the repository
 1) ```npm install``` 
+1) ```npm cache clean --force```
 1) ```npm expo start```
 
 You'll now be greated by Expo where you can [check their docs](https://docs.expo.dev/get-started/expo-go/)
@@ -60,6 +61,17 @@ otherwise it's straight Typescript and Expo.
 # Deployment of Frames and Web
 
 >Official Expo [Deployment Documentation here](https://vercel.com/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt) to be used as most up to date document and reference checked if the below doesn't work!
+
+## Dockerfile - COMING SOON
+
+>NOT PROVIDED YET
+
+We are using [NodeJS](#nodejs-with-express) to build the [smallest Dockerfile](https://snyk.io/blog/choosing-the-best-node-js-docker-image/) we can.
+
+To install Docker on Ubuntu go [here](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) also make sure to [use docker group](https://docs.docker.com/engine/install/linux-postinstall/) instead of sudo if possible :)
+
+Now by building the docker container you can deploy anywhere that supports docker including Kubernetes, DigitalOcean Droplets, Akash.network and the likes.
+
 
 ## NodeJS with Express
 

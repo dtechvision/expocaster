@@ -24,7 +24,7 @@
     "expo-system-ui": "~2.9.3",
     "expo-web-browser": "~12.8.2",
     "farcasterkit": "^1.0.1",
-    "frames.js": "^0.1.1",
+    "frames.js": "^0.4.0",
     "nativewind": "^4.0.1",
     "react-native-reanimated": "~3.6.2",
     "react-native-web": "~0.19.6"
