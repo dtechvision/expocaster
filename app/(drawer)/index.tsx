@@ -1,21 +1,32 @@
-import { Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import RenderFrame from '../../components/render-frame';
 
-import { FrameRender } from '~/components/renderFrame';
-import { getFrame } from 'frames.js/src';
-import { Frame } from 'frames.js';
-
 const Page = () => {
-  let frame: Frame = getFrame({ htmlString: 'tes', url: 'http://localhost:8081/api/frames/costco' });
+  
   return (
-    <View className={styles.container}>
-      <Text className={styles.title}>Home</Text>
-      <FrameRender url="http://localhost:8081/api/frames/costco" isLoggedIn={true} frame={frame}  />
-      <View className={styles.separator} />
-      <RenderFrame frameUrl="http://localhost:8081/api/frames/costco" />
+      <ScrollView contentContainerClassName={styles.container}>
+      {/* 1 Button */}
+      {/* <RenderFrame frameUrl="https://farm.cropxyz.com" /> */}
+
+      {/* 2 Buttons */}
+      {/* <RenderFrame frameUrl="https://fc-polls.vercel.app/polls/13d618ca-9ff5-490f-86d2-1d87ffe5128f" /> */}
+
+      {/* 3 Button */}
+      {/* <RenderFrame frameUrl="https://fc-polls.vercel.app/polls/50623a44-1771-48ce-9274-404e0e82dbe7" /> */}
+
+      {/* 4 Buttons */}
+      <RenderFrame frameUrl="https://fc-polls.vercel.app/polls/8fd0177f-f118-4dce-b87d-0de9835d904d" />
+
+      {/* With Input */}
+      {/* <RenderFrame frameUrl="https://alliance-frame.vercel.app/" /> */}
+
+      {/* With Input -Personal Frame */}
+      <RenderFrame frameUrl="https://sol-drop-frame.vercel.app/" />
+
+      {/* With Image */}
       {/* https://warpcast.com/gregfromstl/0xac0abe37 users casts -> political leaning frame */}
-    </View>
+    </ScrollView>
   );
 };
 
