@@ -1,11 +1,14 @@
 import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    Dimensions,
-    TextInput, Text,
-    DimensionValue
+  StyleSheet,
+  View,
+  Image,
+  Alert,
+  Linking,
+  TouchableOpacity,
+  Dimensions,
+  TextInput,
+  Text,
+  DimensionValue,
 } from 'react-native';
 import React, { PropsWithChildren, useState } from 'react';
 import { FrameButtonProps, FrameData } from '~/components/render-frame';
@@ -54,7 +57,6 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
     });
     const data = await response.text();
     updateFrameData && updateFrameData(data);
-    console.log(data);
   };
 
   return (
@@ -66,14 +68,13 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
       {frameData.buttons && frameData.buttons.length > 0 && (
         <View style={styles.frameButtons}>
           {frameData.buttons.map((button, index) => {
-            const btnWidth = getButtonWidth(index, frameData?.buttons?.length!);
             return (
               <FrameButton
                 key={index}
                 button={button}
                 index={index}
-                width={btnWidth}
-                onClick={() => makePostRequest(index)}
+                onClick={() => makePostRequest(button.index)}
+                totalBtns={frameData?.buttons?.length!}
               />
             );
           })}
@@ -105,22 +106,59 @@ export const FrameInput = ({ placeHolder, handleTextChange }: FrameInputProps) =
 
 const FrameButton = ({
   button,
-  width,
+
+  index,
   onClick,
+  totalBtns,
 }: {
   button: FrameButtonProps;
   index: number;
-  width: DimensionValue;
   onClick?: () => void;
+  totalBtns: number;
 }) => {
+  console.log('button', button);
+
+  const shouldRender = button.type !== 'post_redirect';
+
+  if (button.type === 'link') {
+    console.log('I am link Button');
+    return (
+      <TouchableOpacity
+        style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
+        onPress={() => {
+          Alert.alert(
+            'Warning',
+            'You are about to leave ExpoCaster',
+            [
+              { text: 'OK', onPress: () => Linking.openURL(button.target!) },
+              {
+                text: 'Cancel',
+                onPress: () => {
+                  return null;
+                },
+                style: 'cancel',
+              },
+            ],
+
+            { cancelable: true }
+          );
+        }}>
+        <Text style={{ textAlign: 'center' }}>{button.title}↗</Text>
+      </TouchableOpacity>
+    );
+  }
   return (
-    <TouchableOpacity
-      style={[styles.buttonStyle, { width: width }]}
-      onPress={() => {
-        onClick && onClick();
-      }}>
-      <Text style={{ textAlign: 'center' }}>{button.label}</Text>
-    </TouchableOpacity>
+    <>
+      {shouldRender && (
+        <TouchableOpacity
+          style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
+          onPress={() => {
+            onClick && onClick();
+          }}>
+          <Text style={{ textAlign: 'center' }}>{button.title}</Text>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
