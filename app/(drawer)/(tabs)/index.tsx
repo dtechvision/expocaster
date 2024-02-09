@@ -1,16 +1,63 @@
-import { Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
+import React from 'react';
+import RenderFrame from '~/components/render-frame';
 
-import EditScreenInfo from '../../../components/edit-screen-info';
+const Frames = [
+  {
+    frameUrl: 'https://yoink.terminally.online',
+    title: 'Post Redirect',
+  },
+  {
+    frameUrl: 'https://frames-playground-three.vercel.app/',
+    title: 'Post Link',
+  },
+  {
+    frameUrl: 'https://www.onceupon.gg/0x00000000000000adc04c56bf30ac9d3c0aaf14dc',
+    title: 'Zora Frame',
+  },
+  {
+    frameUrl: 'https://farm.cropxyz.com',
+    title: '1 Button',
+  },
+  {
+    frameUrl: 'https://fc-polls.vercel.app/polls/13d618ca-9ff5-490f-86d2-1d87ffe5128f',
+    title: '2 Buttons',
+  },
+  {
+    frameUrl: 'https://fc-polls.vercel.app/polls/50623a44-1771-48ce-9274-404e0e82dbe7',
+    title: '3 Buttons',
+  },
+  {
+    frameUrl: 'https://fc-polls.vercel.app/polls/8fd0177f-f118-4dce-b87d-0de9835d904d',
+    title: '4 Buttons',
+  },
+  {
+    frameUrl: 'https://alliance-frame.vercel.app/',
+    title: 'With Input',
+  },
+  {
+    frameUrl: 'https://sol-drop-frame.vercel.app/',
+    title: 'With Input -Personal Frame',
+  },
+  {
+    frameUrl: 'https://warpcast.com/gregfromstl/0xac0abe37',
+    title: 'With Image',
+  },
+];
 
-export default function TabOneScreen() {
+const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => {
+  return <RenderFrame frameUrl={item.frameUrl} />;
+};
+
+const TabOneScreen = () => {
   return (
     <View className={styles.container}>
-      <Text className={styles.title}>Tab One</Text>
-      <View className={styles.separator} />
-      <EditScreenInfo path="app/(drawer)/(tabs)/index.tsx" />
+      <FlatList data={Frames} keyExtractor={(item) => item.frameUrl} renderItem={renderItem} />
     </View>
   );
-}
+};
+
+export default TabOneScreen;
 
 const styles = {
   container: `items-center flex-1 justify-center`,
