@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableOpacity,
   Dimensions,
+  Platform,
   TextInput,
   Text,
   DimensionValue,
@@ -29,39 +30,38 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
   );
 
   const makePostRequest = async (buttonIndex: number) => {
-   try {
-    const packetToSend = {
-      untrustedData: {
-        fid: 'HERE_COMES_THE_FID',
-        url: new URL(frameData.postUrl).hostname,
-        messageHash: 'HERE_COMES_THE_MESSAGE_HASH',
-        timestamp: Date.now(),
-        network: 1,
-        buttonIndex: buttonIndex,
-        inputText: inputText,
-        castId: {
+    try {
+      const packetToSend = {
+        untrustedData: {
           fid: 'HERE_COMES_THE_FID',
-          hash: 'HERE_COMES_THE_HASH',
+          url: new URL(frameData.postUrl).hostname,
+          messageHash: 'HERE_COMES_THE_MESSAGE_HASH',
+          timestamp: Date.now(),
+          network: 1,
+          buttonIndex: buttonIndex,
+          inputText: inputText,
+          castId: {
+            fid: 'HERE_COMES_THE_FID',
+            hash: 'HERE_COMES_THE_HASH',
+          },
         },
-      },
-      trustedData: {
-        messageBytes: 'HERE_COMES_THE_MESSAGE_BYTES',
-      },
-    };
+        trustedData: {
+          messageBytes: 'HERE_COMES_THE_MESSAGE_BYTES',
+        },
+      };
 
-    const response = await fetch(frameData.postUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(packetToSend),
-    });
-    const data = await response.text();
-    updateFrameData && updateFrameData(data);
-   } catch (error) {
-    console.log("Error",error);
-    
-   }
+      const response = await fetch(frameData.postUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(packetToSend),
+      });
+      const data = await response.text();
+      updateFrameData && updateFrameData(data);
+    } catch (error) {
+      console.log('Error', error);
+    }
   };
 
   return (
@@ -144,7 +144,6 @@ const FrameButton = ({
                 style: 'cancel',
               },
             ],
-
             { cancelable: true }
           );
         }}>
@@ -158,7 +157,8 @@ const FrameButton = ({
         <TouchableOpacity
           style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
           onPress={() => {
-            onClick && onClick();
+            Alert.alert('Warning', 'You are about to leave ExpoCaster');
+            // onClick && onClick();
           }}>
           <Text style={{ textAlign: 'center' }}>{button.title}</Text>
         </TouchableOpacity>
@@ -196,22 +196,28 @@ function getButtonWidth(index: number, length: number): DimensionValue {
 const WINDOW_WIDTH = Dimensions.get('window').width - 20;
 
 const styles = StyleSheet.create({
-  container:{
-    width: '100%',
+  container: {
+    width: Platform.OS === 'web' ? '40%' : WINDOW_WIDTH,
     height: 'auto',
-    justifyContent: 'space-around',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     borderColor: 'black',
+    borderRadius: 8,
+    // marginVertical: 8,
   },
   frameButtons: {
-    width: WINDOW_WIDTH,
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
+    padding: 4,
+    zIndex: 1,
   },
   imageStyle: {
-    width: WINDOW_WIDTH,
-    height: 220,
+    width: '100%',
+    height: 200,
     borderRadius: 8,
   },
   buttonStyle: {
@@ -223,9 +229,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     marginVertical: 4,
+    // marginHorizontal:2
   },
   inputStyle: {
-    width: WINDOW_WIDTH,
+    width: '98%',
     height: 40,
     padding: 8,
     borderRadius: 4,

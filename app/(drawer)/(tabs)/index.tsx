@@ -1,4 +1,4 @@
-import { FlatList, View,StyleSheet ,ScrollView} from 'react-native';
+import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import RenderFrame from '~/components/render-frame';
 
@@ -51,12 +51,12 @@ const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => 
 
 const TabOneScreen = () => {
   return (
-    <ScrollView contentContainerStyle={Styles.container}>
-      {
-        Frames.map((item)=>{
-          return <RenderFrame key={item.frameUrl} frameUrl={item.frameUrl} />
-        })
-      }
+    <ScrollView style={{ flex: 1,padding:4 }}>
+      <RenderFrame frameUrl={Frames[0].frameUrl} />
+      <RenderFrame frameUrl={Frames[3].frameUrl} />
+      <RenderFrame frameUrl={Frames[8].frameUrl} />
+      <RenderFrame frameUrl={Frames[7].frameUrl} />
+      {/* <RenderFrame frameUrl={Frames[2].frameUrl} /> */}
       {/* <FlatList data={Frames}  keyExtractor={(item) => item.frameUrl} renderItem={renderItem} /> */}
     </ScrollView>
   );
@@ -64,7 +64,7 @@ const TabOneScreen = () => {
 
 export default TabOneScreen;
 
-const Styles=StyleSheet.create({
+const Styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
