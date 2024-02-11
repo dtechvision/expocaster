@@ -157,8 +157,8 @@ const FrameButton = ({
         <TouchableOpacity
           style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
           onPress={() => {
-            Alert.alert('Warning', 'You are about to leave ExpoCaster');
-            // onClick && onClick();
+            // Alert.alert('Warning', 'You are about to leave ExpoCaster');
+            onClick && onClick();
           }}>
           <Text style={{ textAlign: 'center' }}>{button.title}</Text>
         </TouchableOpacity>
