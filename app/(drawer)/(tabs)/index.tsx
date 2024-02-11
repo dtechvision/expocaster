@@ -1,4 +1,4 @@
-import { FlatList, View } from 'react-native';
+import { FlatList, View,StyleSheet ,ScrollView} from 'react-native';
 import React from 'react';
 import RenderFrame from '~/components/render-frame';
 
@@ -51,14 +51,35 @@ const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => 
 
 const TabOneScreen = () => {
   return (
-    <View className={styles.container}>
-      <FlatList data={Frames} keyExtractor={(item) => item.frameUrl} renderItem={renderItem} />
-    </View>
+    <ScrollView contentContainerStyle={Styles.container}>
+      {
+        Frames.map((item)=>{
+          return <RenderFrame key={item.frameUrl} frameUrl={item.frameUrl} />
+        })
+      }
+      {/* <FlatList data={Frames}  keyExtractor={(item) => item.frameUrl} renderItem={renderItem} /> */}
+    </ScrollView>
   );
 };
 
 export default TabOneScreen;
 
+const Styles=StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 const styles = {
   container: `items-center flex-1 justify-center`,
   separator: `h-[1px] my-7 w-4/5 bg-gray-200`,

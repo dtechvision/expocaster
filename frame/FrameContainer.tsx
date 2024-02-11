@@ -29,6 +29,7 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
   );
 
   const makePostRequest = async (buttonIndex: number) => {
+   try {
     const packetToSend = {
       untrustedData: {
         fid: 'HERE_COMES_THE_FID',
@@ -57,10 +58,14 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
     });
     const data = await response.text();
     updateFrameData && updateFrameData(data);
+   } catch (error) {
+    console.log("Error",error);
+    
+   }
   };
 
   return (
-    <View className="w-full h-auto justify-around items-center border-black">
+    <View style={styles.container}>
       {frameData.image && <FrameImage src={frameData.image} />}
       {frameData.inputText && (
         <FrameInput placeHolder={frameData.inputText} handleTextChange={handleTextChange} />
@@ -191,6 +196,13 @@ function getButtonWidth(index: number, length: number): DimensionValue {
 const WINDOW_WIDTH = Dimensions.get('window').width - 20;
 
 const styles = StyleSheet.create({
+  container:{
+    width: '100%',
+    height: 'auto',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderColor: 'black',
+  },
   frameButtons: {
     width: WINDOW_WIDTH,
     flexDirection: 'row',
