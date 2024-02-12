@@ -16,7 +16,7 @@ const DrawerLayout = () => (
     <Drawer.Screen
       name="(tabs)"
       options={{
-        headerTitle: 'Tabs',
+        headerTitle: 'ExpoCaster',
         drawerLabel: 'Tabs',
         drawerIcon: ({ size, color }) => (
           <MaterialIcons name="border-bottom" size={size} color={color} />

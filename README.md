@@ -26,6 +26,8 @@ to test:
 
 You'll now be greated by Expo where you can [check their docs](https://docs.expo.dev/get-started/expo-go/)
 
+[Create-Expo-Stack](createexpostack.com) was used to jumpstart this repo in one command ```npx create-expo-stack@latest expocaster --expo-router --drawer+tabs --nativewind --firebase```
+
 ## built using Farcaster Ecosystem awesomness
 
 - [Farcasterkit - React Hooks](https://www.farcasterkit.com/)
@@ -77,19 +79,13 @@ Now by building the docker container you can deploy anywhere that supports docke
 
 > Expo's [Official Documentation can be found here and should be referenced if the below doesn't work](https://docs.expo.dev/router/reference/api-routes/#express)
 
-Copy the following file structure over to your server where you have nodeJS installed
+the one command build expo web for prod and use express routing
 
 ```
-/
-|
-|_ server.js
-|
-|_ dist/
-
+npx expo export -p web && cp server.js dist/ && cp package.json dist/
 ```
 
-then run the node server
-
+now you can copy the contents of `dist/` to your nodeJS server root dir and serve with
 ```
 node server.js
 ```

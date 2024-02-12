@@ -16,6 +16,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.7",
+    "cheerio": "^1.0.0-rc.12",
     "expo": "~50.0.6",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
@@ -24,10 +25,10 @@
     "expo-system-ui": "~2.9.3",
     "expo-web-browser": "~12.8.2",
     "farcasterkit": "^1.0.1",
-    "frames.js": "^0.4.0",
     "nativewind": "^4.0.1",
     "react-native-reanimated": "~3.6.2",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
