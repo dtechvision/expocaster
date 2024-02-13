@@ -1,4 +1,4 @@
-import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import RenderFrame from '~/components/render-frame';
 
@@ -48,16 +48,23 @@ const Frames = [
 const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => {
   return <RenderFrame frameUrl={item.frameUrl} />;
 };
-const FRAME_PUBLIC_URL = __DEV__ ? 'http://localhost:8081' : 'https://expocaster-omega.vercel.app/';
+const FRAME_PUBLIC_URL = __DEV__
+  ? 'http://192.168.1.4:8081'
+  : 'https://expocaster-omega.vercel.app/';
 const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/costco';
+
 const TabOneScreen = () => {
   return (
     <ScrollView style={{ flex: 1, padding: 4 }}>
-      <RenderFrame frameUrl={LOCAL_FRAME_URL} />
+      <RenderFrame
+        frameUrl={'https://paragraph.xyz/@kerman/farcaster-an-example-of-permissionless-identity'}
+      />
       <RenderFrame frameUrl={Frames[0].frameUrl} />
+      <RenderFrame frameUrl={LOCAL_FRAME_URL} />
+      <RenderFrame frameUrl={Frames[1].frameUrl} />
       <RenderFrame frameUrl={Frames[3].frameUrl} />
-      <RenderFrame frameUrl={Frames[8].frameUrl} />
-      <RenderFrame frameUrl={Frames[7].frameUrl} />
+      {/* <RenderFrame frameUrl={Frames[8].frameUrl} /> */}
+      {/* <RenderFrame frameUrl={Frames[7].frameUrl} /> */}
       {/* <RenderFrame frameUrl={Frames[2].frameUrl} /> */}
       {/* <FlatList data={Frames}  keyExtractor={(item) => item.frameUrl} renderItem={renderItem} /> */}
     </ScrollView>

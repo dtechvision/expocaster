@@ -19,7 +19,7 @@ export function POST(request: ExpoRequest) {
     <html>
       <head>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="https://res.cloudinary.com/merkle-manufactory/image/fetch/c_fill,f_jpg,w_168/https%3A%2F%2Fi.imgur.com%2FOHMozjv.jpg" />
+        <meta property="og:image" content="https://res.cloudinary.com/merkle-manufactory/image/fetch/c_fill,f_jpg,w_168/https%3A%2F%2Fi.imgur.com%2FOHMozjv.jpg" />
         <meta property="fc:frame:button:1" content="You are a happy member!"/>
         <meta property="fc:frame:post_url" content="${postUrl}" />
       </head>

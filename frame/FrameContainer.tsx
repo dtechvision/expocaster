@@ -12,14 +12,16 @@ import {
   DimensionValue,
 } from 'react-native';
 import React, { PropsWithChildren, useState } from 'react';
-import { FrameButtonProps, FrameData } from '~/components/render-frame';
+import { Frame, FrameButton as IFrameButton } from './utils/types';
+import { isValidHttpUrl } from './utils/helpers';
 
 type FrameContainerProps = {
-  frameData: FrameData;
+  frameData: Frame;
+  frameUrl: string;
   updateFrameData?: (url: string) => void;
 } & PropsWithChildren<{}>;
 
-const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => {
+const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainerProps) => {
   const [inputText, setInputText] = useState('');
 
   const handleTextChange = React.useCallback(
@@ -65,32 +67,39 @@ const FrameContainer = ({ frameData, updateFrameData }: FrameContainerProps) => 
   };
 
   return (
-    <View style={styles.container}>
-      {frameData.image && <FrameImage src={frameData.image} />}
-      {frameData.inputText && (
-        <FrameInput placeHolder={frameData.inputText} handleTextChange={handleTextChange} />
-      )}
-      {frameData.buttons && frameData.buttons.length > 0 && (
-        <View style={styles.frameButtons}>
-          {frameData.buttons.map((button, index) => {
-            return (
-              <FrameButton
-                key={index}
-                button={button}
-                index={index}
-                onClick={() => makePostRequest(button.index)}
-                totalBtns={frameData?.buttons?.length!}
-              />
-            );
-          })}
+    <>
+      <View style={styles.container}>
+        {frameData.image && <FrameImage src={frameData.image} />}
+        <View style={{ padding: 8 }}>
+          {frameData.inputText && (
+            <FrameInput placeHolder={frameData.inputText} handleTextChange={handleTextChange} />
+          )}
+          {frameData.buttons && frameData.buttons.length > 0 && (
+            <View style={styles.frameButtons}>
+              {frameData.buttons.map((button, index) => {
+                return (
+                  <FrameButton
+                    key={index}
+                    button={button}
+                    index={index}
+                    onClick={() => makePostRequest(index + 1)}
+                    totalBtns={frameData?.buttons?.length!}
+                  />
+                );
+              })}
+            </View>
+          )}
         </View>
-      )}
-    </View>
+      </View>
+      <Text numberOfLines={1} style={{ maxWidth: '40%', alignSelf: 'flex-end' }}>
+        {frameUrl}
+      </Text>
+    </>
   );
 };
 
 export const FrameImage = ({ src }: { src: string }) => {
-  return <Image source={{ uri: src }} style={styles.imageStyle} resizeMode="stretch" />;
+  return <Image source={{ uri: src }} style={[styles.imageStyle]} resizeMode="stretch" />;
 };
 
 type FrameInputProps = {
@@ -103,91 +112,86 @@ export const FrameInput = ({ placeHolder, handleTextChange }: FrameInputProps) =
     <TextInput
       placeholder={placeHolder}
       onChangeText={handleTextChange}
-      selectionColor={'black'}
+      selectionColor={'white'}
       style={styles.inputStyle}
+      placeholderTextColor={'white'}
     />
   );
 };
 
 const FrameButton = ({
   button,
-
   index,
   onClick,
   totalBtns,
 }: {
-  button: FrameButtonProps;
+  button: IFrameButton;
   index: number;
   onClick?: () => void;
   totalBtns: number;
 }) => {
-  console.log('button', button);
-
-  const shouldRender = button.type !== 'post_redirect';
-
-  if (button.type === 'link') {
-    console.log('I am link Button');
+  const openExternalLink = () => {
+    if (!button.target) return;
+    if (!isValidHttpUrl(button.target)) {
+      return;
+    }
+    Alert.alert(
+      'Warning',
+      'You are about to leave ExpoCaster',
+      [
+        { text: 'OK', onPress: () => Linking.openURL(button.target!) },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            return null;
+          },
+          style: 'cancel',
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+  if (button.action === 'link' || button.action === 'post_redirect') {
     return (
       <TouchableOpacity
         style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
-        onPress={() => {
-          Alert.alert(
-            'Warning',
-            'You are about to leave ExpoCaster',
-            [
-              { text: 'OK', onPress: () => Linking.openURL(button.target!) },
-              {
-                text: 'Cancel',
-                onPress: () => {
-                  return null;
-                },
-                style: 'cancel',
-              },
-            ],
-            { cancelable: true }
-          );
-        }}>
-        <Text style={{ textAlign: 'center' }}>{button.title}↗</Text>
+        onPress={openExternalLink}>
+        <Text style={{ textAlign: 'center', color: 'white' }}>{button.label}↗</Text>
       </TouchableOpacity>
     );
   }
   return (
-    <>
-      {shouldRender && (
-        <TouchableOpacity
-          style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
-          onPress={() => {
-            // Alert.alert('Warning', 'You are about to leave ExpoCaster');
-            onClick && onClick();
-          }}>
-          <Text style={{ textAlign: 'center' }}>{button.title}</Text>
-        </TouchableOpacity>
-      )}
-    </>
+    <TouchableOpacity
+      style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
+      onPress={() => {
+        onClick && onClick();
+      }}>
+      <Text style={{ textAlign: 'center', color: 'white' }}>{button.label}</Text>
+    </TouchableOpacity>
   );
 };
 
 export default FrameContainer;
 
 function getButtonWidth(index: number, length: number): DimensionValue {
-  let btnWidth: DimensionValue = '50%';
+  let btnWidth: DimensionValue = '48%';
   if (length === 1) {
-    btnWidth = '100%';
+    btnWidth = '98%';
   }
   if (length === 2) {
     if (index === 0 || index === 1) {
-      btnWidth = '50%';
+      btnWidth = '48%';
     }
     if (index === 2) {
-      btnWidth = '100%';
+      btnWidth = '98%';
     }
   }
   if (length === 3) {
     if (index === 1) {
-      btnWidth = '50%';
+      btnWidth = '48%';
     }
     if (index === 2) {
-      btnWidth = '100%';
+      btnWidth = '98%';
     }
   }
   return btnWidth;
@@ -199,45 +203,43 @@ const styles = StyleSheet.create({
   container: {
     width: Platform.OS === 'web' ? '40%' : WINDOW_WIDTH,
     height: 'auto',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: '#2a2432',
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderColor: 'black',
     borderRadius: 8,
-    // marginVertical: 8,
+    marginVertical: 8,
   },
   frameButtons: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
-    padding: 4,
-    zIndex: 1,
   },
   imageStyle: {
     width: '100%',
-    height: 200,
-    borderRadius: 8,
+    height: 180,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   buttonStyle: {
-    width: '50%',
     height: 'auto',
     borderRadius: 4,
-    borderColor: 'lightgrey',
-    backgroundColor: 'grey',
+    borderColor: '#4c3a4ec0',
+    backgroundColor: '#ffffff1a',
     borderWidth: 1,
     padding: 8,
     marginVertical: 4,
-    // marginHorizontal:2
   },
   inputStyle: {
-    width: '98%',
+    width: 'auto',
     height: 40,
-    padding: 8,
+    padding: Platform.OS === 'web' ? 1 : 8,
     borderRadius: 4,
     marginVertical: 4,
-    borderColor: 'black',
+    borderColor: '#4c3a4ec0',
+    backgroundColor: '#ffffff1a',
     borderWidth: 1,
   },
 });

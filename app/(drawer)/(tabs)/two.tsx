@@ -1,10 +1,11 @@
 import { Text, View,StyleSheet } from 'react-native';
+import FrameDebugger from '~/frame/FrameDebugger';
 
 
 export default function TabTwoScreen() {
   return (
     <View style={Styles.container}>
-     <Text>Hello</Text>
+     <FrameDebugger/>
     </View>
   );
 }

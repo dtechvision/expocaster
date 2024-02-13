@@ -20,14 +20,14 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Explore Frames',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="window-restore" color={color} />,
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
           title: 'Frame Debugger',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="database" color={color} />,
         }}
       />
     </Tabs>
