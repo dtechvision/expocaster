@@ -10,7 +10,7 @@
     "vercel-build": "expo export -p web"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "^0.4.1",
+    "@coinbase/onchainkit": "^0.6.1",
     "@expo/vector-icons": "^14.0.0",
     "@mod-protocol/core": "^0.2.1",
     "@react-navigation/bottom-tabs": "^6.5.8",
