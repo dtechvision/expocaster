@@ -49,14 +49,8 @@ export default function RenderFrame({ frameUrl }: { frameUrl: string }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      {frameData && (
-        <FrameContainer
-          frameUrl={frameUrl}
-          frameData={frameData}
-          updateFrameData={updateFrameData}
-        />
-      )}
-    </View>
+    frameData && (
+      <FrameContainer frameUrl={frameUrl} frameData={frameData} updateFrameData={updateFrameData} />
+    )
   );
 }

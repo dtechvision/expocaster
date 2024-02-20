@@ -37,7 +37,6 @@ export function getFrameParsedData({ htmlString, url }: { htmlString: string; ur
         .toArray()
     );
   }
-
   let validationErrors: null | Record<string, string[]> = null;
 
   function addValidationError({ key, message }: { key: string; message: string }) {
