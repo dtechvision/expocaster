@@ -18,7 +18,7 @@ Write once, enjoy everywhere.
 
 ## Getting Started
 
-to test: 
+to test follow instructions for full expo or use [Docker for Web + API routes](#dockerfile)
 1) Clone the repository
 1) ```npm install``` 
 1) ```npm cache clean --force```
@@ -64,16 +64,29 @@ otherwise it's straight Typescript and Expo.
 
 >Official Expo [Deployment Documentation here](https://vercel.com/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt) to be used as most up to date document and reference checked if the below doesn't work!
 
-## Dockerfile - COMING SOON
+## Dockerfile
 
->NOT PROVIDED YET
+>IMPORTANT: use the .dockerignore to control what is included in the Docker Image! .env is excluded and env variables shall be used.
 
-We are using [NodeJS](#nodejs-with-express) to build the [smallest Dockerfile](https://snyk.io/blog/choosing-the-best-node-js-docker-image/) we can.
+to build 
+```
+docker build -t expocaster .
+```
+
+to run
+```
+docker run -d -p 3000:3000 expocaster
+```
+
+We are using [NodeJS](#nodejs-with-express) as deployment in the Dockerfile trying to build the [smallest Dockerfile](https://snyk.io/blog/choosing-the-best-node-js-docker-image/) we can (without using distroless).
 
 To install Docker on Ubuntu go [here](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) also make sure to [use docker group](https://docs.docker.com/engine/install/linux-postinstall/) instead of sudo if possible :)
 
 Now by building the docker container you can deploy anywhere that supports docker including Kubernetes, DigitalOcean Droplets, Akash.network and the likes.
 
+## Kubernetes (Helm Chart)
+
+A Helmchart deployment for the sample, where you can simply change the Dockerfile of your choosing and get up and running will follow soon.
 
 ## NodeJS with Express
 
