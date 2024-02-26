@@ -10,7 +10,7 @@ import {
   Text,
   DimensionValue,
 } from 'react-native';
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { Frame, FrameButton as IFrameButton } from './utils/types';
 import { isValidHttpUrl } from './utils/helpers';
 
@@ -103,7 +103,26 @@ const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainer
 };
 
 export const FrameImage = ({ src }: { src: string }) => {
-  return <Image source={{ uri: src }} style={[styles.imageStyle]} resizeMode="stretch" />;
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const getImageSize = async () => {
+      try {
+        await Image.getSize(src, (width, height) => {
+          setImageDimensions({ width, height });
+        });
+      } catch (error) {
+        console.error('Error fetching image size:', error);
+      }
+    };
+
+    getImageSize();
+  }, [src]);
+  const imageStyle =
+    imageDimensions.width && imageDimensions.height
+      ? { width: '100%', aspectRatio: imageDimensions.width / imageDimensions.height }
+      : styles.defaultAspectRatio;
+  return <Image source={{ uri: src }} style={[styles.imageStyle,imageStyle]} resizeMode="stretch" />;
 };
 
 const FrameURL = ({ frameUrl }: { frameUrl: string }) => {
@@ -244,9 +263,11 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    height: 180,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+  },
+  defaultAspectRatio: {
+    aspectRatio: 1,
   },
   buttonStyle: {
     height: 'auto',

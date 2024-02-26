@@ -20,10 +20,12 @@ const Frames = [
     frameUrl: LOCAL_FRAME_URL,
     title: 'Local Frame',
   },
+
   {
-    frameUrl: "https://farcaster.vote/4ae20a8eb4caa52f5588f7bb9f3c6d6b7cf003a5b03f4589edea100000000062",
-    title: '4 buttons',
+    frameUrl: 'https://frames.neynar.com/f/6f89a5ac/505cd276',
+    title: 'Aspect Ratio Frame',
   },
+
   {
     frameUrl: 'https://sol-drop-frame.vercel.app/',
     title: 'With Input -Personal Frame',

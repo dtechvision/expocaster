@@ -69,7 +69,7 @@ export default function FrameDebugger() {
         placeholder="Enter Frame URL"
         placeholderTextColor={'black'}
       />
-      <TouchableOpacity style={styles.buttonStyle} onPress={loadFrame}  >
+      <TouchableOpacity style={styles.buttonStyle} onPress={loadFrame}>
         <Text style={styles.itemText}>{frameData ? 'Clear Frame' : 'Load Frame'}</Text>
       </TouchableOpacity>
       {frameData && (
@@ -127,7 +127,11 @@ const RenderRow: FC<RowProps> = ({ frameKey, value }) => {
         <Text style={styles.itemText}>{frameKey}</Text>
         <Text style={styles.itemText}>{Boolean(value) ? '✅' : '❌'}</Text>
       </View>
-      {value ? <Text style={styles.itemText}>{value}</Text> : null}
+      {value ? (
+        <Text style={styles.itemText} numberOfLines={3}>
+          {value}
+        </Text>
+      ) : null}
     </TouchableOpacity>
   );
 };

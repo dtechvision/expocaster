@@ -11,8 +11,8 @@ import {
   Text,
   DimensionValue,
 } from 'react-native';
-import React, { PropsWithChildren, useState } from 'react';
-import { Frame, FrameButton as IFrameButton } from './utils/types';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { Frame, FrameButton as IFrameButton, ImageAspectRatio } from './utils/types';
 import { isValidHttpUrl } from './utils/helpers';
 
 type FrameContainerProps = {
@@ -62,14 +62,16 @@ const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainer
       const data = await response.text();
       updateFrameData && updateFrameData(data);
     } catch (error) {
-      console.log('Error', error);
+      console.error('Error:', error);
     }
   };
 
   return (
     <>
       <View style={styles.container}>
-        {frameData.image && <FrameImage src={frameData.image} />}
+        {frameData.image && (
+          <FrameImage src={frameData.image} aspectRatio={frameData.imageAspectRatio} />
+        )}
         <View style={{ padding: 8 }}>
           {frameData.inputText && (
             <FrameInput placeHolder={frameData.inputText} handleTextChange={handleTextChange} />
@@ -98,8 +100,34 @@ const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainer
   );
 };
 
-export const FrameImage = ({ src }: { src: string }) => {
-  return <Image source={{ uri: src }} style={[styles.imageStyle]} resizeMode="stretch" />;
+export const FrameImage = ({ src }: { src: string; aspectRatio: ImageAspectRatio | undefined }) => {
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+  useEffect(() => {
+    const getImageSize = async () => {
+      try {
+        await Image.getSize(src, (width, height) => {
+          setImageDimensions({ width, height });
+        });
+      } catch (error) {
+        console.error('Error fetching image size:', error);
+      }
+    };
+
+    getImageSize();
+  }, [src]);
+  const imageStyle =
+    imageDimensions.width && imageDimensions.height
+      ? { width: '100%', aspectRatio: imageDimensions.width / imageDimensions.height }
+      : styles.defaultAspectRatio;
+
+  return (
+    <Image
+      source={{ uri: src }}
+      style={[styles.imageStyle, imageStyle]}
+      resizeMode="stretch"
+      resizeMethod="auto"
+    />
+  );
 };
 
 type FrameInputProps = {
@@ -219,9 +247,12 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    height: 180,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+  },
+  defaultAspectRatio: {
+    aspectRatio: 1,
+    // height: 200,
   },
   buttonStyle: {
     height: 'auto',
