@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+
 import RenderFrame from '~/components/render-frame';
+
 const FRAME_PUBLIC_URL = __DEV__ ? 'http://192.168.1.2:8081' : 'https://expocaster.netlify.app/';
 const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/costco';
 const Frames = [
@@ -31,10 +33,6 @@ const Frames = [
     title: 'With Input -Personal Frame',
   },
 ];
-
-const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => {
-  return <RenderFrame frameUrl={item.frameUrl} />;
-};
 
 const TabOneScreen = () => {
   const { width } = useWindowDimensions();
