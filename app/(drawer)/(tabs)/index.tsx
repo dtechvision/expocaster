@@ -3,9 +3,13 @@ import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 
 import RenderFrame from '~/components/render-frame';
 
-const FRAME_PUBLIC_URL = __DEV__ ? 'http://192.168.1.2:8081' : 'https://expocaster.netlify.app/';
-const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/costco';
+const FRAME_PUBLIC_URL = __DEV__ ? 'http://localhost:8081' : 'https://expocaster.netlify.app/';
+const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/examples/sampleInput';
 const Frames = [
+  {
+    frameUrl: LOCAL_FRAME_URL,
+    title: 'Local Frame',
+  },
   {
     frameUrl: 'https://yoink.terminally.online',
     title: 'Post Redirect',
@@ -17,10 +21,6 @@ const Frames = [
   {
     frameUrl: 'https://alliance-frame.vercel.app/',
     title: 'With Input',
-  },
-  {
-    frameUrl: LOCAL_FRAME_URL,
-    title: 'Local Frame',
   },
 
   {
