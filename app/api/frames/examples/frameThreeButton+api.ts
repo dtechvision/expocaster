@@ -10,7 +10,7 @@ import { setFrameServerUrl } from '../helpers';
  * @returns
  */
 export async function GET(request: ExpoRequest) {
-  return frameOneButton(request);
+  return frameThreeButton(request);
 }
 
 /**
@@ -25,23 +25,32 @@ export async function POST(request: ExpoRequest) {
   // if you need more time, you can use the post_redirect to send the user to a new frame and there continuing the "wait" until done
   // you can also send people to different frames all together that are not in here and compose with other Frames 
   // or use other Routes in this project to buildout one Typescript file per frame
-  return responseFrame(request, '');
+  return responseFrame(request, 'three buttons');
 }
 
-async function frameOneButton(req: ExpoRequest) {
+async function frameThreeButton(req: ExpoRequest) {
   const FRAME_SERVER_URL = setFrameServerUrl(req.headers.get('host') ?? '');
   return new ExpoResponse(
     // build the frame
     getFrameHtmlResponse({
-      ogTitle: 'One Button',
-      ogDescription: 'This is a frame with one button',
+      ogTitle: 'Three Buttons',
+      ogDescription: 'This is a frame with three buttons',
       buttons: [
         {
           label: `One Button`,
         },
+        {
+          label: `Two Buttons`,
+        },
+        {
+          label: `Three Buttons`,
+        },
       ],
-      image: `${FRAME_SERVER_URL}/assets/examples/coderSquare.png`,
-      postUrl: `${FRAME_SERVER_URL}api/frames/examples/frameOneButton`,
+      image: {
+        src: `${FRAME_SERVER_URL}/assets/examples/coderSquare.png`,
+        aspectRatio: '1:1', //for rectangular images use 1.91:1
+      },
+      postUrl: `${FRAME_SERVER_URL}/api/frames/examples/frameThreeButton`,
     }),
     // build response details
     {

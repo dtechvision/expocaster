@@ -13,7 +13,7 @@ let FRAME_SERVER_URL = '';
  */
 export async function GET(request: ExpoRequest) {
   FRAME_SERVER_URL = setFrameServerUrl(request.headers.get('host') ?? '');
-  return frameInput(request);
+  return frameRedirect(request);
 }
 
 /**
@@ -23,38 +23,30 @@ export async function GET(request: ExpoRequest) {
  */
 export async function POST(request: ExpoRequest) {
   FRAME_SERVER_URL = setFrameServerUrl(request.headers.get('host') ?? '');
-
-  const body: FrameRequest = await request.json();
-  // the same data exists in signed Data, signed commented out for localhost testing, use on warpcast test tool
-  // ====
-  // const { isValid, message } = await getFrameMessage(body, { neynarApiKey: process.env.NEYNAR_API_KEY });
-  // if (!isValid) {
-  //   throw new Error('Invalid Frame message');
-  // }
-  // const text = message.input;
-  // ===
-  // simple example for untrusted data, use trusted data if authentication is needed
-  const text = body.untrustedData?.inputText;
-  // if no input field is present inputText will be empty
-  return responseFrame(request, text);
+  return responseFrame(request, 'redirect');
 }
 
-export async function frameInput(req: ExpoRequest) {
+export async function frameRedirect(req: ExpoRequest) {
+  const redirectUrl = 'https://dtech.vision/';
+  // you can also do custom logic here to infer redirectUrl from Frame Message or other data
+
   return new ExpoResponse(
     // build the frame
     getFrameHtmlResponse({
-      ogTitle: 'Sample Input',
-      ogDescription: 'This is a sample input frame',
+      ogTitle: 'Sample Redirect',
+      ogDescription: 'This is a sample redirect frame',
       buttons: [
         {
-          label: `Send Input`,
+          label: `Click to be redirected`,
+          action: 'link',
+          target: redirectUrl, // on click user is redirect to content of redirectUrl
         },
       ],
-      input: {
-        text: 'Placeholder',
+      image: {
+        src: `${FRAME_SERVER_URL}/assets/examples/coderSquare.png`,
+        aspectRatio: '1:1', //for rectangular images use 1.91:1
       },
-      image: `${FRAME_SERVER_URL}/assets/examples/coderSquare.png`,
-      postUrl: `${FRAME_SERVER_URL}api/frames/examples/sampleInput`,
+      postUrl: `${FRAME_SERVER_URL}/api/frames/examples/frameRedirect`,
     }),
     // build response details
     {

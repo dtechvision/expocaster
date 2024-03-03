@@ -32,3 +32,13 @@ to test:
 - 1:1 and 1.91:1 aspect ratios alternating TODO
 
 - Dynamic Image (low expiry) TODO
+
+## Example Images
+
+Images generated with prompt
+
+```
+miami vice style coder with macbook and glowing logo in a futuristic city coworking, 1.91:1 image format
+```
+
+on [Akash](https://sdxl.akash.network/)
