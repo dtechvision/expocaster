@@ -1,64 +1,47 @@
-import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
+import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+
 import RenderFrame from '~/components/render-frame';
 
+const FRAME_PUBLIC_URL = __DEV__ ? 'http://localhost:8081' : 'https://expocaster.netlify.app/';
+const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/examples/sampleInput';
 const Frames = [
+  {
+    frameUrl: LOCAL_FRAME_URL,
+    title: 'Local Frame',
+  },
   {
     frameUrl: 'https://yoink.terminally.online',
     title: 'Post Redirect',
-  },
-  {
-    frameUrl: 'https://frames-playground-three.vercel.app/',
-    title: 'Post Link',
-  },
-  {
-    frameUrl: 'https://www.onceupon.gg/0x00000000000000adc04c56bf30ac9d3c0aaf14dc',
-    title: 'Zora Frame',
   },
   {
     frameUrl: 'https://farm.cropxyz.com',
     title: '1 Button',
   },
   {
-    frameUrl: 'https://fc-polls.vercel.app/polls/13d618ca-9ff5-490f-86d2-1d87ffe5128f',
-    title: '2 Buttons',
-  },
-  {
-    frameUrl: 'https://fc-polls.vercel.app/polls/50623a44-1771-48ce-9274-404e0e82dbe7',
-    title: '3 Buttons',
-  },
-  {
-    frameUrl: 'https://fc-polls.vercel.app/polls/8fd0177f-f118-4dce-b87d-0de9835d904d',
-    title: '4 Buttons',
-  },
-  {
     frameUrl: 'https://alliance-frame.vercel.app/',
     title: 'With Input',
   },
+
+  {
+    frameUrl: 'https://frames.neynar.com/f/6f89a5ac/505cd276',
+    title: 'Aspect Ratio Frame',
+  },
+
   {
     frameUrl: 'https://sol-drop-frame.vercel.app/',
     title: 'With Input -Personal Frame',
   },
-  {
-    frameUrl: 'https://warpcast.com/gregfromstl/0xac0abe37',
-    title: 'With Image',
-  },
 ];
 
-const renderItem = ({ item }: { item: { frameUrl: string; title: string } }) => {
-  return <RenderFrame frameUrl={item.frameUrl} />;
-};
-const FRAME_PUBLIC_URL = __DEV__ ? 'http://localhost:8081' : 'https://expocaster-omega.vercel.app/';
-const LOCAL_FRAME_URL = FRAME_PUBLIC_URL + '/api/frames/costco';
 const TabOneScreen = () => {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
   return (
-    <ScrollView style={{ flex: 1, padding: 4 }}>
-      <RenderFrame frameUrl={LOCAL_FRAME_URL} />
-      <RenderFrame frameUrl={Frames[0].frameUrl} />
-      <RenderFrame frameUrl={Frames[3].frameUrl} />
-      <RenderFrame frameUrl={Frames[8].frameUrl} />
-      <RenderFrame frameUrl={Frames[7].frameUrl} />
-      {/* <RenderFrame frameUrl={Frames[2].frameUrl} /> */}
+    <ScrollView contentContainerStyle={[Styles.container, { width: isMobile ? '100%' : '40%' }]}>
+      {Frames.map((frame, index) => {
+        return <RenderFrame key={index} frameUrl={frame.frameUrl} />;
+      })}
       {/* <FlatList data={Frames}  keyExtractor={(item) => item.frameUrl} renderItem={renderItem} /> */}
     </ScrollView>
   );
@@ -68,9 +51,10 @@ export default TabOneScreen;
 
 const Styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    alignSelf: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
   },
   separator: {
     marginVertical: 30,

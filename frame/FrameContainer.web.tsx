@@ -5,14 +5,13 @@ import {
   Alert,
   Linking,
   TouchableOpacity,
-  Dimensions,
   Platform,
   TextInput,
   Text,
   DimensionValue,
 } from 'react-native';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { Frame, FrameButton as IFrameButton, ImageAspectRatio } from './utils/types';
+import { Frame, FrameButton as IFrameButton } from './utils/types';
 import { isValidHttpUrl } from './utils/helpers';
 
 type FrameContainerProps = {
@@ -58,11 +57,12 @@ const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainer
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(packetToSend),
+        mode: 'no-cors',
       });
       const data = await response.text();
       updateFrameData && updateFrameData(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.log('Error', error);
     }
   };
 
@@ -70,38 +70,41 @@ const FrameContainer = ({ frameData, frameUrl, updateFrameData }: FrameContainer
     <>
       <View style={styles.container}>
         {frameData.image && (
-          <FrameImage src={frameData.image} aspectRatio={frameData.imageAspectRatio} />
+          <View style={{ height: 'auto', width: '100%' }}>
+            <FrameImage src={frameData.image} />
+            <FrameURL frameUrl={frameUrl} />
+          </View>
         )}
-        <View style={{ padding: 8 }}>
+        <View style={{ padding: 8, width: '100%' }}>
           {frameData.inputText && (
             <FrameInput placeHolder={frameData.inputText} handleTextChange={handleTextChange} />
           )}
-          {frameData.buttons && frameData.buttons.length > 0 && (
-            <View style={styles.frameButtons}>
-              {frameData.buttons.map((button, index) => {
-                return (
-                  <FrameButton
-                    key={index}
-                    button={button}
-                    index={index}
-                    onClick={() => makePostRequest(index + 1)}
-                    totalBtns={frameData?.buttons?.length!}
-                  />
-                );
-              })}
-            </View>
-          )}
+          <View style={styles.frameButtons}>
+            {frameData.buttons && frameData.buttons.length > 0 && (
+              <View style={styles.frameButtons}>
+                {frameData.buttons.map((button, index) => {
+                  return (
+                    <FrameButton
+                      key={index}
+                      button={button}
+                      index={index}
+                      onClick={() => makePostRequest(index + 1)}
+                      totalBtns={frameData?.buttons?.length!}
+                    />
+                  );
+                })}
+              </View>
+            )}
+          </View>
         </View>
       </View>
-      <Text numberOfLines={1} style={{ maxWidth: '40%', alignSelf: 'flex-end' }}>
-        {frameUrl}
-      </Text>
     </>
   );
 };
 
-export const FrameImage = ({ src }: { src: string; aspectRatio: ImageAspectRatio | undefined }) => {
+export const FrameImage = ({ src }: { src: string }) => {
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
   useEffect(() => {
     const getImageSize = async () => {
       try {
@@ -119,14 +122,18 @@ export const FrameImage = ({ src }: { src: string; aspectRatio: ImageAspectRatio
     imageDimensions.width && imageDimensions.height
       ? { width: '100%', aspectRatio: imageDimensions.width / imageDimensions.height }
       : styles.defaultAspectRatio;
+  return <Image source={{ uri: src }} style={[styles.imageStyle,imageStyle]} resizeMode="stretch" />;
+};
+
+const FrameURL = ({ frameUrl }: { frameUrl: string }) => {
+  const frameHost = new URL(frameUrl).hostname;
 
   return (
-    <Image
-      source={{ uri: src }}
-      style={[styles.imageStyle, imageStyle]}
-      resizeMode="stretch"
-      resizeMethod="auto"
-    />
+    <View style={styles.frameUrlContainer}>
+      <Text numberOfLines={1} style={{ maxWidth: '100%', textAlign: 'center', color: 'white' }}>
+        {frameHost}
+      </Text>
+    </View>
   );
 };
 
@@ -184,7 +191,7 @@ const FrameButton = ({
       <TouchableOpacity
         style={[styles.buttonStyle, { width: getButtonWidth(index, totalBtns) }]}
         onPress={openExternalLink}>
-        <Text style={{ textAlign: 'center', color: 'white' }}>{button.label}↗</Text>
+        <Text style={styles.buttonTextStyle}>{button.label}↗</Text>
       </TouchableOpacity>
     );
   }
@@ -194,7 +201,7 @@ const FrameButton = ({
       onPress={() => {
         onClick && onClick();
       }}>
-      <Text style={{ textAlign: 'center', color: 'white' }}>{button.label}</Text>
+      <Text style={styles.buttonTextStyle}>{button.label}</Text>
     </TouchableOpacity>
   );
 };
@@ -225,11 +232,9 @@ function getButtonWidth(index: number, length: number): DimensionValue {
   return btnWidth;
 }
 
-const WINDOW_WIDTH = Dimensions.get('window').width - 20;
-
 const styles = StyleSheet.create({
   container: {
-    width: Platform.OS === 'web' ? '40%' : WINDOW_WIDTH,
+    width: '100%',
     height: 'auto',
     backgroundColor: '#2a2432',
     alignSelf: 'center',
@@ -239,11 +244,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginVertical: 8,
   },
+  frameUrlContainer: {
+    position: 'absolute',
+    bottom: 2,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 50,
+    padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   frameButtons: {
-    width: '100%',
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
     flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
   },
   imageStyle: {
     width: '100%',
@@ -252,7 +268,6 @@ const styles = StyleSheet.create({
   },
   defaultAspectRatio: {
     aspectRatio: 1,
-    // height: 200,
   },
   buttonStyle: {
     height: 'auto',
@@ -261,10 +276,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff1a',
     borderWidth: 1,
     padding: 8,
-    marginVertical: 4,
+  },
+  buttonTextStyle: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 14,
   },
   inputStyle: {
-    width: 'auto',
+    width: '98%',
+    alignSelf: 'center',
     height: 40,
     padding: Platform.OS === 'web' ? 1 : 8,
     borderRadius: 4,
@@ -272,5 +292,7 @@ const styles = StyleSheet.create({
     borderColor: '#4c3a4ec0',
     backgroundColor: '#ffffff1a',
     borderWidth: 1,
+    paddingHorizontal: 8,
+    color: 'white',
   },
 });

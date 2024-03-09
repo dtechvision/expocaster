@@ -10,7 +10,7 @@
     "vercel-build": "expo export -p web"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "^0.4.1",
+    "@coinbase/onchainkit": "^0.9.0",
     "@expo/vector-icons": "^14.0.0",
     "@mod-protocol/core": "^0.2.1",
     "@react-navigation/bottom-tabs": "^6.5.8",
@@ -28,7 +28,8 @@
     "nativewind": "^4.0.1",
     "react-native-reanimated": "~3.6.2",
     "react-native-web": "~0.19.6",
-    "text-encoding": "^0.7.0"
+    "text-encoding": "^0.7.0",
+    "expo-asset": "~9.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
